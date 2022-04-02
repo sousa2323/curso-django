@@ -4,6 +4,9 @@ from django.contrib.auth.models import User
 class Category(models.Model):
     name = models.CharField(max_length=65)
 
+    def __str__(self):
+        return self.name
+
 class Recipe(models.Model):
     title = models.CharField(max_length=65)
     description = models.CharField(max_length=165)
@@ -25,3 +28,5 @@ class Recipe(models.Model):
         User, on_delete=models.SET_NULL, null=True
     )
 
+    def __str__(self):
+        return self.title
