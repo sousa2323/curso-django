@@ -1,7 +1,7 @@
 from django.test import TestCase
+from django.urls import reverse
 
-class RecipeURLsTest(TestCase): # noqa: E302 E261
-    def test_the_pytest_is_ok(self):
-        variavel = '123456' # noqa: F841 E261
-        print('Olá mundo')
-        assert 1 == 1, '1 é igual a 1'
+class RecipeURLsTest(TestCase): 
+    def test_recipe_home_url_is_correct(self):
+        home_url = reverse('recipes:home')   
+        self.assertEqual(home_url, '/') 
