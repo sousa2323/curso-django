@@ -1,9 +1,9 @@
 from django.urls import reverse, resolve
 from recipes import views
+from unittest import skip
 
-from .test_recipe_base import RecipeTestBase, Recipe
+from .test_recipe_base import RecipeTestBase
 
-    
 
 class RecipeViewsTest(RecipeTestBase):   
     def test_recipe_home_view_function_is_correct(self):
@@ -18,17 +18,19 @@ class RecipeViewsTest(RecipeTestBase):
         response = self.client.get(reverse('recipes:home')) 
         self.assertTemplateUsed(response, 'recipes/pages/home.html')
 
-
+    
     def test_recipe_home_template_shows_no_recipes_found_if_no_recipes(self):
         response = self.client.get(reverse('recipes:home')) 
         self.assertIn(
             '<h1>No recipes found here 🥲</h1>',
             response.content.decode('utf-8')
         )
+        # usa para gerar um erro e caso precise voltar a digitar o teste
+        # self.fail('Para que eu termine de digita-lo')
 
     def test_recipe_home_template_loads_recipes(self):
         self.make_recipe()
-        
+
         response = self.client.get(reverse('recipes:home'))
         content = response.content.decode('utf-8')
         response_context_recipes = response.context['recipes']
