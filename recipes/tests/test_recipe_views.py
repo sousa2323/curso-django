@@ -36,7 +36,20 @@ class RecipeViewsTest(RecipeTestBase):
 
         # Check if one recipe exists
         self.assertIn('Recipe Title', content)
-        self.assertEqual(len(response_context_recipes), 1)   
+        self.assertEqual(len(response_context_recipes), 1)
+
+    
+    def test_recipe_home_template_dont_load_recipes_not_publishe(self):
+        """Test recipe is_publish=False dont show"""
+        self.make_recipe(is_publish=False)
+
+        response = self.client.get(reverse('recipes:home'))
+
+        # Check if one recipe exists
+        self.assertIn(
+            '<h1>No recipes found here 🥲</h1>',
+            response.content.decode('utf-8')
+        )       
 
     def test_recipe_category_view_function_is_correct(self):
         view = resolve(
@@ -60,6 +73,17 @@ class RecipeViewsTest(RecipeTestBase):
 
         # Check if one recipe exists
         self.assertIn(needed_title, content)
+
+            
+    def test_recipe_category_template_dont_load_recipes_not_publishe(self):
+        """Test recipe is_publish=False dont show"""
+        recipe = self.make_recipe(is_publish=False)
+
+        response = self.client.get(
+            reverse('recipes:recipe', kwargs={'id': recipe.category.id})
+        ) 
+
+        self.assertEqual(response.status_code, 404)
 
     def test_recipe_detail_view_function_is_correct(self):
         view = resolve(
@@ -89,3 +113,18 @@ class RecipeViewsTest(RecipeTestBase):
 
         # Check if one recipe exists
         self.assertIn(needed_title, content)    
+
+    def test_recipe_detail_template_dont_load_recipe_not_publishe(self):
+        """Test recipe is_publish=False dont show"""
+        recipe = self.make_recipe(is_publish=False)
+
+        response = self.client.get(
+            reverse(
+                'recipes:recipe', 
+                kwargs={
+                    'id': recipe.category.id
+                }
+            )
+        )
+
+        self.assertEqual(response.status_code, 404)   
