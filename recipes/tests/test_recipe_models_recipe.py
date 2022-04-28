@@ -8,6 +8,7 @@ class RecipeModelTest(RecipeTestBase):
     def setUp(self) -> None:
         self.recipe = self.make_recipe()
         return super().setUp()
+        
     @parameterized.expand([
         ('title', 65),
         ('description', 165),
